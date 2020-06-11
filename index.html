@@ -1,0 +1,41 @@
+<head>
+
+	<title>A Demo WebMap</title>
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" />
+	<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script type="text/javascript"></script>
+    </script>
+
+</head>
+
+<body>
+<div id="mapid" style="width: 600px; height: 400px;"></div>
+<script type="text/javascript">
+var myMap = L.map('mapid').setView([45.4192857, -75.6973237],13);
+L.tileLayer('https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png',
+	{maxZoom: 19
+}).addTo(myMap);
+
+L.tileLayer('http://mapwarper.net/maps/tile/48018/{z}/{x}/{y}.png',
+  {maxZoom: 19}
+).addTo(myMap);
+
+// load a GeoJSON from external file
+$.getJSON("point-data.geojson", function(data) {
+  // add GeoJSON layer to the map once the file is loaded
+  var datalayer = L.geoJson(data ,{
+  onEachFeature: function(feature, featureLayer) {
+  featureLayer.bindPopup(feature.properties.Label);
+  }
+}).addTo(myMap);
+});
+
+</script>
+
+</body>
+</html>
